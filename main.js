@@ -1,3 +1,9 @@
+// We need this in order to load the audio files.
+// We can't load them if the user didn't perform any gesture yet.
+let userClickedStarted = false;
+
+// Sound when getting in/out the pipe.
+let pipeSound;
 
 // Pipe
 let leftPipeImg;
@@ -37,10 +43,13 @@ function preload() {
 
     // Animal GIFs
     horseGif = createImg('assets/gifs/horse.gif');
+    horseGif.style('display', `none`);
 
     // Pipe
     leftPipeImg = createImg('assets/pipe.png');
     rightPipeImg = createImg('assets/pipe.png');
+    leftPipeImg.style('display', `none`);
+    rightPipeImg.style('display', `none`);
 
     // Base
     baseImg = loadImage('assets/base.png');  // This will remain untouched.
@@ -48,7 +57,14 @@ function preload() {
 }
 
 function setup() {
+
     createCanvas(windowWidth, windowHeight);
+
+    // Create a start button
+    let startButton = createButton('s t a r t');
+    startButton.id('startButton');
+    // startButton.position(width / 2 - 50, height / 2);
+    startButton.mousePressed(handleStartButton);
 
     angleMode(DEGREES);
 
@@ -77,6 +93,24 @@ function setup() {
 
 }
 
+
+function handleStartButton() {
+    // Start the sketch when the button is pressed.
+    userClickedStarted = true;
+    
+    // Start the audio context on user gesture and load sounds
+    userStartAudio();
+      pipeSound = loadSound('assets/audio/pipe.mp3');
+
+    // Remove the start button after starting
+    let startButton = select('button');
+    startButton.remove();
+
+    // Turning all images visible now
+    leftPipeImg.style('display', `inline`);
+    rightPipeImg.style('display', `inline`);
+  }
+
 function windowResized() {
     resizeCanvas(windowWidth, windowHeight);
 
@@ -97,14 +131,16 @@ function update() {
     animal.update();
 }
 
+
+  
 function draw() {
-    update();
-    background(0);
-
-    drawScene();
+    if(userClickedStarted){
+        update();
+        background(0);
     
-    horseGif.position(mouseX, mouseY);
-
-    animal.draw();
+        drawScene();
+            
+        animal.draw();
+    }
 
 }

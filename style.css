@@ -1,5 +1,19 @@
 body {
     margin: 0;
     height: 100vh;
-    background-color: lightblue;
+    background-color: black;
+}
+
+#startButton {
+    /* Centralize */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    width: 200px;
+    height: 50px;
+
+    font-size: 20px;
+    cursor: pointer;
 }
