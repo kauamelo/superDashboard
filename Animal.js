@@ -46,6 +46,11 @@ class Animal {
     draw() {
         if(!this.isDead)
         {
+            fill(255);
+            textAlign(CENTER);
+            textSize(20);
+            text(this.name, this.x, this.y-30);
+
             this.image.position(this.x - this.image.width/2, 
                                 this.y - this.image.height/2);
         }

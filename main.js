@@ -1,6 +1,8 @@
 // We need this in order to load the audio files.
 // We can't load them if the user didn't perform any gesture yet.
 let userClickedStarted = false;
+// let userClickedStarted = true;
+
 
 // Sound when getting in/out the pipe.
 let pipeSound;
@@ -18,8 +20,16 @@ let baseImgScaled;
 
 // Animals GIFs
 let horseGif;
+let catGif;
+let dogGif;
+let exoticGif;
+
+//
+let gameFont;
 
 let animal;
+
+let board;
 
 
 // Draw: pipes, base, 
@@ -34,7 +44,6 @@ function drawScene () {
     image(baseImgScaled, windowWidth/2, windowHeight - baseImgScaled.height/2);
 }
 
-
 function preload() {
     // !! The order in which you load things here does matter !!
     // Gif are loaded as 'createImg' which creates an HTML element outside the canvas.
@@ -43,7 +52,15 @@ function preload() {
 
     // Animal GIFs
     horseGif = createImg('assets/gifs/horse.gif');
+    catGif = createImg('assets/gifs/cat.gif');
+    dogGif = createImg('assets/gifs/dog.gif');
+    exoticGif = createImg('assets/gifs/exotic.gif');
+    //   Hiding their HTML elements   
     horseGif.style('display', `none`);
+    catGif.style('display', `none`);
+    dogGif.style('display', `none`);
+    exoticGif.style('display', `none`);
+
 
     // Pipe
     leftPipeImg = createImg('assets/pipe.png');
@@ -54,16 +71,19 @@ function preload() {
     // Base
     baseImg = loadImage('assets/base.png');  // This will remain untouched.
     baseImgScaled = loadImage('assets/base.png'); // This will be resized possibly several times.
+
+    // 
+    gameFont = loadFont('assets/fonts/joystix.otf');
+
 }
 
 function setup() {
 
     createCanvas(windowWidth, windowHeight);
 
-    // Create a start button
+    // Create the start button
     let startButton = createButton('s t a r t');
     startButton.id('startButton');
-    // startButton.position(width / 2 - 50, height / 2);
     startButton.mousePressed(handleStartButton);
 
     angleMode(DEGREES);
@@ -82,14 +102,20 @@ function setup() {
     baseImgScaled.resize(windowWidth, baseImgScaled.height);
 
     // Bringing the pipes to the front so it always show above all other <imgs>
-    // leftPipeImg.style('z-index', '2');
-    // rightPipeImg.style('z-index', '2');
+    leftPipeImg.style('z-index', '2');
+    rightPipeImg.style('z-index', '2');
+
+
+    textFont(gameFont);
+
 
     animal = new Animal(leftPipeImg.width/2, 
                         pipeHeightFactor*windowHeight + leftPipeImg.height/2, 
                         "Busse", 
                         2, 
                         'assets/gifs/horse.gif');
+
+    board = new Board();
 
 }
 
@@ -131,8 +157,6 @@ function update() {
     animal.update();
 }
 
-
-  
 function draw() {
     if(userClickedStarted){
         update();
@@ -141,6 +165,7 @@ function draw() {
         drawScene();
             
         animal.draw();
-    }
+        board.draw();
 
+    }
 }
