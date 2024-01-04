@@ -63,9 +63,9 @@ class Board {
         let dashBoardPosition = createVector(windowWidth/2 - rectWidth/2, 
                                              windowHeight/2 - rectHeight/2);
 
+        translate(dashBoardPosition.x, dashBoardPosition.y);
 
         push();
-            translate(dashBoardPosition.x, dashBoardPosition.y);
 
             // Invisible rect which wraps all texts.
             // fill(200,140,100);
@@ -74,6 +74,7 @@ class Board {
             // rect(0,0,rectWidth, rectHeight);
 
             // SUPER AGRIA VET GUIDE   /   TODAY * 230
+            textAlign(CENTER);
             fill(255);
             textSize(44);
             text("SUPER AGRIA VET GUIDE", rectWidth/2, textAscent());

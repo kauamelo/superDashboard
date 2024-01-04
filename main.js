@@ -179,8 +179,8 @@ function update() {
     let randomIndex = Math.floor(Math.random() * types.length);
     let randomAnimalType = types[randomIndex];
 
-    // Creating a new animal
-    if (frameCount - lastAnimalCreationFrame >= animalCreationInterval) {
+    // Creating a new animal every once in a while.
+    if (frameCount - lastAnimalCreationFrame >= animalCreationInterval + Math.floor(Math.random() * 19000) ) {
 
         let newAnimal = new Animal(leftPipeImg.width / 2, 
                                     pipeHeightFactor*windowHeight + leftPipeImg.height/2, 
