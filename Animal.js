@@ -1,25 +1,50 @@
 
 class Animal {
-    constructor(x, y, name, type, imagePath) {
-      this.x = x;
-      this.y = y;
+    constructor(posX, posY, name, type, handleAnimalBooked) {
+        this.x = posX;
+        this.y = posY;
+        this.initialY = this.y;
 
-      this.name = name;
+        this.name = name;
 
-      this.type = type;
-      this.image = createImg(imagePath);
+        this.type = type;
 
-      this.speed = 3;
+        switch(type){
+            case animalTypes.DOG:
+                this.image = createImg('assets/gifs/dog.gif');
+                break;
 
-      this.isDead = false;
-      this.leftFirstPipe = false;
-      this.enteredSecondPipe = false;
+            case animalTypes.CAT:
+                this.image = createImg('assets/gifs/cat.gif');
+                break;
+
+            case animalTypes.HORSE:
+                this.image = createImg('assets/gifs/horse.gif');
+                break;
+
+            case animalTypes.EXOTIC:
+                this.image = createImg('assets/gifs/exotic.gif');
+                break;
+
+            default:
+                this.image = createImg('assets/gifs/exotic.gif');
+        }
+
+        this.speed = 3;
+
+        this.isDead = false;
+        this.leftFirstPipe = false;
+        this.enteredSecondPipe = false;
+
+        this.handleAnimalBooked = handleAnimalBooked;
     }
   
     update() {
       if(!this.isDead)
       {
             this.x += this.speed;
+            this.y = this.initialY + 10 * sin(this.x * 2);
+            // this.y = this.initialY;
 
             // Play pipe sound.
             if(pipeSound.isLoaded()){
@@ -32,7 +57,9 @@ class Animal {
                 // when entering the right pipe
                 if(!this.enteredSecondPipe && this.x >= rightPipeImg.position().x) {
                     this.enteredSecondPipe = true;
-                    pipeSound.play();
+                    // pipeSound.play();
+                    coinSound.play();
+                    this.handleAnimalBooked(this.type);
                 }
             }
             

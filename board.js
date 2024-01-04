@@ -4,7 +4,7 @@ class Board {
     constructor () {
 
         // 
-        this.todayTodayBookings = 0;
+        this.todayBookings = 0;
 
         // The number of each type of animal which has booked a meeting today.
         this.numberOfCats = 0;
@@ -26,9 +26,33 @@ class Board {
             {  date: 'DEC 22', meetings: 291 },
             {  date: 'DEC 28', meetings: 121 },
             {  date: 'DEC 18', meetings: 97 }
-          ];
+        ];
     }
 
+    animalBooked(type){
+        this.todayBookings++;
+
+        switch(type){
+            case animalTypes.DOG:
+                this.numberOfDogs++;
+                break;
+
+            case animalTypes.CAT:
+                this.numberOfCats++;
+                break;
+
+            case animalTypes.HORSE:
+                this.numberOfHorses++;
+                break;
+
+            case animalTypes.EXOTIC:
+                this.numberOfExotic++;
+                break;
+
+            default:
+                this.numberOfExotic++;
+        }
+    }
 
     draw() {
 
@@ -56,7 +80,7 @@ class Board {
             text("TODAY", rectWidth/2 - 100, 2*textAscent() + 20);
             image(this.coinImg, rectWidth/2 + 60, 2*textAscent() + 5);
             textAlign(LEFT);
-            text(`${this.todayTodayBookings}`, rectWidth/2 +100, 2*textAscent() + 20);
+            text(`${this.todayBookings}`, rectWidth/2 +100, 2*textAscent() + 20);
 
 
             // Gifs row
@@ -83,7 +107,7 @@ class Board {
 
             // High Score board
             push();
-                let highScoreRectDimensions = createVector(700, 475);
+                let highScoreRectDimensions = createVector(720, 475);
 
                 // Dashed borders
                 translate(paddingLeft, gifRowPosY + 30);

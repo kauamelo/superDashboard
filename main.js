@@ -6,6 +6,7 @@ let userClickedStarted = false;
 
 // Sound when getting in/out the pipe.
 let pipeSound;
+let coinSound;
 
 // Pipe
 let leftPipeImg;
@@ -27,10 +28,21 @@ let exoticGif;
 //
 let gameFont;
 
-let animal;
+let animals = [];
+// 
+let animalCreationInterval = 120; // Create a new animal every 120 frames (roughly every 2 seconds)
+let lastAnimalCreationFrame = 0;
 
+
+let animal;
 let board;
 
+const animalTypes = {
+    DOG: 'Dog',
+    CAT: 'Cat',
+    HORSE: 'Horse',
+    EXOTIC: 'Exotic'
+};
 
 // Draw: pipes, base, 
 function drawScene () {
@@ -108,14 +120,20 @@ function setup() {
 
     textFont(gameFont);
 
-
-    animal = new Animal(leftPipeImg.width/2, 
-                        pipeHeightFactor*windowHeight + leftPipeImg.height/2, 
-                        "Busse", 
-                        2, 
-                        'assets/gifs/horse.gif');
-
+    // The board needs to necessarily be created before the animals since 
+    //  we are passing some of its functions to the animals.
     board = new Board();
+
+
+    // animal = new Animal(leftPipeImg.width/2, 
+    //                     pipeHeightFactor*windowHeight + leftPipeImg.height/2, 
+    //                     "Busse", 
+    //                     animalTypes.CAT,
+    //                     (animalType) => {
+    //                         if(board){
+    //                             board.animalBooked(animalType);
+    //                         }}
+    //                    );
 
 }
 
@@ -126,7 +144,8 @@ function handleStartButton() {
     
     // Start the audio context on user gesture and load sounds
     userStartAudio();
-      pipeSound = loadSound('assets/audio/pipe.mp3');
+    pipeSound = loadSound('assets/audio/pipe.mp3');
+    coinSound = loadSound('assets/audio/coin.mp3');
 
     // Remove the start button after starting
     let startButton = select('button');
@@ -154,7 +173,46 @@ function windowResized() {
 }
 
 function update() {
-    animal.update();
+
+    // Picking a random animal type
+    let types = Object.values(animalTypes);
+    let randomIndex = Math.floor(Math.random() * types.length);
+    let randomAnimalType = types[randomIndex];
+
+    // Creating a new animal
+    if (frameCount - lastAnimalCreationFrame >= animalCreationInterval) {
+
+        let newAnimal = new Animal(leftPipeImg.width / 2, 
+                                    pipeHeightFactor*windowHeight + leftPipeImg.height/2, 
+                                    petNames[Math.floor(Math.random() * petNames.length)], 
+                                    randomAnimalType, 
+                                    (animalType) => {
+                                    if (board) {
+                                        board.animalBooked(animalType);
+                                    }
+                                  });
+
+        animals.push(newAnimal); 
+
+
+        lastAnimalCreationFrame = frameCount;
+    }
+
+
+    for (let i = 0; i < animals.length; i++) {
+        animals[i].update();
+    }
+
+    // animal.update();
+
+    // Remove animals which were already computed
+    // We're looping backwards here because we're removing
+    //  items at the same time that we're looping here.
+    for (let i = animals.length - 1; i >= 0; i--) {
+        if (animals[i].isDead) {
+            animals.splice(i, 1);
+        }
+    }
 }
 
 function draw() {
@@ -164,8 +222,47 @@ function draw() {
     
         drawScene();
             
-        animal.draw();
+        // animal.draw();
+        for (let i = 0; i < animals.length; i++) {
+            animals[i].draw();
+        }
+
         board.draw();
 
     }
 }
+
+
+
+const petNames = [
+    "Bella",
+    "Max",
+    "Lucy",
+    "Charlie",
+    "Luna",
+    "Cooper",
+    "Milo",
+    "Oliver",
+    "Leo",
+    "Chloe",
+    "Simba",
+    "Coco",
+    "Buddy",
+    "Sadie",
+    "Rocky",
+    "Sophie",
+    "Molly",
+    "Tucker",
+    "Daisy",
+    "Oscar",
+    "Zoe",
+    "Lola",
+    "Jackson",
+    "Lily",
+    "Bailey",
+    "Maddie",
+    "Jack",
+    "Nala",
+    "Sam",
+    "Lily",
+  ];
