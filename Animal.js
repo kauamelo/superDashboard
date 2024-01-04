@@ -40,34 +40,35 @@ class Animal {
     }
   
     update() {
-      if(!this.isDead)
-      {
+        if(!this.isDead)
+        {
             this.x += this.speed;
             this.y = this.initialY + 10 * sin(this.x * 2);
-            // this.y = this.initialY;
 
-            // Play pipe sound.
-            if(pipeSound.isLoaded()){
-                // when leaving the first pipe
-                if(!this.leftFirstPipe && this.x + 60 >= leftPipeImg.position().x + leftPipeImg.width) {
-                    this.leftFirstPipe = true;
+            // When leaving the first pipe
+            if(!this.leftFirstPipe && this.x + 60 >= leftPipeImg.position().x + leftPipeImg.width) {
+                this.leftFirstPipe = true;
+                if(pipeSound.isLoaded()){
                     pipeSound.play();
-                }   
-
-                // when entering the right pipe
-                if(!this.enteredSecondPipe && this.x >= rightPipeImg.position().x) {
-                    this.enteredSecondPipe = true;
-                    // pipeSound.play();
-                    coinSound.play();
-                    this.handleAnimalBooked(this.type);
                 }
+            }   
+
+            // When entering the right pipe
+            if(!this.enteredSecondPipe && this.x >= rightPipeImg.position().x) {
+                this.enteredSecondPipe = true;
+
+                if(coinSound.isLoaded()){
+                    coinSound.play();
+                }
+
+                this.handleAnimalBooked(this.type);
             }
             
-            // Kill it when getting in the right pipe
+            // Kill this animal when getting in the right pipe.
             if(this.x >= windowWidth){
                 this.kill();
             }
-      }
+        }
     }
   
     draw() {

@@ -2,8 +2,6 @@
 
 class Board {
     constructor () {
-
-        // 
         this.todayBookings = 0;
 
         // The number of each type of animal which has booked a meeting today.
@@ -19,14 +17,20 @@ class Board {
         this.exoticGif = createImg('assets/gifs/exotic.gif');
         this.coinImg = loadImage('assets/coin.png');
 
-        // 
+        // Score to be shown in the table:
         this.highScoreData = [
-            {  date: 'DEC 01', meetings: 320 },
-            {  date: 'DEC 12', meetings: 311 },
-            {  date: 'DEC 22', meetings: 291 },
-            {  date: 'DEC 28', meetings: 121 },
-            {  date: 'DEC 18', meetings: 97 }
+            {  date: '.', meetings: 0 },
+            {  date: '.', meetings: 0 },
+            {  date: '.', meetings: 0 },
+            {  date: '.', meetings: 0 },
+            {  date: '.', meetings: 0 }
         ];
+        this.yesterdaysScore = 0;
+    }
+
+    updateScoreData (highScoreData, yesterdaysScore) {
+        this.highScoreData = highScoreData;
+        this.yesterdaysScore = yesterdaysScore;
     }
 
     animalBooked(type){
@@ -55,7 +59,6 @@ class Board {
     }
 
     draw() {
-
         // Invisible rect which wraps all the texts. 
         let rectWidth = 800;
         let rectHeight = windowHeight - 100;
@@ -66,7 +69,6 @@ class Board {
         translate(dashBoardPosition.x, dashBoardPosition.y);
 
         push();
-
             // Invisible rect which wraps all texts.
             // fill(200,140,100);
             // stroke(255);
@@ -85,9 +87,7 @@ class Board {
 
 
             // Gifs row
-            // let gifRowPosY = dashBoardPosition.y + 6*textAscent() + 200;
             let gifRowPosY = windowHeight - 800;
-
             let paddingLeft = 55;
             let spaceBetweenGifs = 200;
             let numberOfAnimalsPadding = 70;
@@ -119,12 +119,11 @@ class Board {
                 rect(0, 0, highScoreRectDimensions.x, highScoreRectDimensions.y);
                 drawingContext.setLineDash([]); // Reset the line dash to default
 
-                //  Header: HIGH SCORE 
+                // Header: HIGH SCORE 
                 fill(255);
                 textAlign(CENTER);
                 noStroke();
                 text('HIGH SCORE', highScoreRectDimensions.x/2 , 60 );
-
 
                 // TABLE
                 let tablePosY = 150;
@@ -148,7 +147,7 @@ class Board {
                 // Yesterday's score
                 textAlign(CENTER);
                 textSize(28);
-                text(`YESTERDAY'S SCORE: ${271}`, highScoreRectDimensions.x/2, highScoreRectDimensions.y + 50);
+                text(`YESTERDAY'S SCORE: ${this.yesterdaysScore}`, highScoreRectDimensions.x/2, highScoreRectDimensions.y + 50);
 
             pop();
         pop();
