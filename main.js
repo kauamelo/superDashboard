@@ -41,7 +41,11 @@ const animalTypes = {
     EXOTIC: 'Exotic'
 };
 
-
+authenticate();
+// Instead of renewing the accessToken through the refreshToken, we'll just
+//  login (authenticate) again every hour, so we skip the need to write that logic.
+// This will only run locally, so it's ok to save the email/password in the code here :)
+setInterval(authenticate, 59 * 60 * 1000);
 
 function preload() {
     // !! The order in which you load things here does matter !!
